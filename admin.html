@@ -47,12 +47,13 @@ input:focus{border-color:#fff}
 #lobs .card.lob{align-content:start}
 .prow{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:10px}
 .ptop{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}.dim{color:var(--dim);font-size:13px}
-.pf{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.pf label{display:grid;gap:4px;min-width:0}
+.pf{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.pf label{display:grid;gap:4px;min-width:0}
 .pf span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 .pf input{width:100%;min-width:0;background:#000;border:1px solid var(--line);color:#fff;border-radius:8px;padding:10px 8px;font:inherit;font-size:16px;outline:none}
 .pf input:focus{border-color:#fff}
 .prow .acts{align-items:center}.okl{font-size:13px;color:#22c55e;flex:1 1 100%}
 .btn.sm{padding:10px 14px;font-size:12px}
+.pf .usd{font-size:11px;color:var(--dim);min-height:16px}.tkimg{width:16px;height:16px;object-fit:contain;vertical-align:-3px;margin-right:4px}
 #rep{margin-bottom:14px}#rep h2{display:flex;align-items:center;gap:10px}#rep h2 img{width:28px;height:28px;object-fit:contain}
 .rp{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;margin-top:10px}
 .rp p{white-space:pre-wrap;word-break:break-word;background:#000;border:1px solid var(--line);border-radius:8px;padding:10px}
@@ -111,27 +112,29 @@ dd.onclick=function(){resolve(r.id,false)};a.appendChild(bb);a.appendChild(dd);c
 function resolve(id,ban){say('amsg');rpc('admin_resolve_report',{p_id:id,p_ban:ban}).then(poll).catch(function(e){say('amsg',err(e))})}
 function row(l,p){
 var res=p.res,base=p.streak,st={place:null,touched:false},r=el('div','prow'),top=el('div','ptop');
-top.appendChild(el('b',null,p.u));top.appendChild(el('span','dim','PR '+fmt(p.pr)+' \u00b7 streak '+p.streak+' \u00b7 '+(+p.games||0)+' game'+(+p.games===1?'':'s')+' saved'));r.appendChild(top);
+top.appendChild(el('b',null,p.u));top.appendChild(el('span','dim','PR '+fmt(p.pr)+' \u00b7 streak '+p.streak+' \u00b7 '+Math.floor(+p.tokens||0).toLocaleString()+' tokens \u00b7 '+(+p.games||0)+' game'+(+p.games===1?'':'s')+' saved'));r.appendChild(top);
 var sg=el('div','seg'),pb=[];
 for(var n=1;n<=l.mode;n++)(function(n){var b=el('button','',PN[n]);b.type='button';b.onclick=function(){st.place=n;paint()};pb.push(b);sg.appendChild(b)})(n);
 r.appendChild(sg);
 var f=el('div','pf');
 function num(lbl,v){var w=el('label'),i=el('input');i.type='number';i.min=0;i.setAttribute('inputmode','numeric');i.value=v;w.appendChild(el('span',null,lbl));w.appendChild(i);f.appendChild(w);return i}
-var k=num('Kills',0),d=num('Deaths',0),a=num('Aces',0),s=num('Win streak',base);
+var k=num('Kills',0),d=num('Deaths',0),a=num('Aces',0),s=num('Win streak',base),tk=num('Tokens',0);
+tk.removeAttribute('min');var usd=el('div','usd');tk.parentNode.appendChild(usd);
+tk.oninput=function(){var v=+tk.value||0;usd.textContent=v?'\u2248 $'+(v/1000).toFixed(2):''};
 s.oninput=function(){st.touched=true};
 function paint(){pb.forEach(function(b,i){b.className=st.place===i+1?'on':''});if(!st.touched)s.value=st.place===1?base+1:(st.place?0:base)}
 paint();r.appendChild(f);
 var ac=el('div','acts'),sv=el('button','btn sm','Save game & update PR');sv.type='button';
 sv.onclick=function(){if(!st.place)return say('amsg','Pick a placement for '+p.u+' first.');sv.disabled=true;say('amsg');
-rpc('admin_save_result',{p_lobby:l.id,p_user:p.u,p_place:st.place,p_kills:+k.value||0,p_deaths:+d.value||0,p_aces:+a.value||0,p_streak:+s.value||0})
+rpc('admin_save_result',{p_lobby:l.id,p_user:p.u,p_place:st.place,p_kills:+k.value||0,p_deaths:+d.value||0,p_aces:+a.value||0,p_streak:+s.value||0,p_tokens:Math.round(+tk.value||0)})
 .then(poll).catch(function(e){say('amsg',err(e));sv.disabled=false})};
 ac.appendChild(sv);
 if(res){var un=el('button','btn ghost sm','Undo last game');un.type='button';
 un.onclick=function(){if(confirm('Undo '+p.u+'\u2019s last saved game? Stats and PR go back.'))rpc('admin_undo_result',{p_lobby:l.id,p_user:p.u}).then(poll).catch(function(e){say('amsg',err(e))})};ac.appendChild(un);
-var dl=+res.pr_delta;ac.appendChild(el('div','okl','\u2713 Last game: '+(PN[res.place]||'')+' \u00b7 '+(dl>=0?'+':'')+fmt(dl)+' PR \u2192 now '+fmt(p.pr)))}
+var dl=+res.pr_delta;ac.appendChild(el('div','okl','\u2713 Last game: '+(PN[res.place]||'')+' \u00b7 '+(dl>=0?'+':'')+fmt(dl)+' PR \u2192 now '+fmt(p.pr)+(+res.tokens?' \u00b7 '+(+res.tokens>0?'+':'')+Math.round(+res.tokens).toLocaleString()+' tokens':'')))}
 r.appendChild(ac);return r}
 function sync(l,c){if(!c.rowsBox)return;l.players.filter(function(p){return p.picked}).forEach(function(p){
-var sg=JSON.stringify([p.pr,p.streak,p.res,p.games]),o=c.rows[p.u];if(o&&o.sig===sg)return;
+var sg=JSON.stringify([p.pr,p.streak,p.tokens,p.res,p.games]),o=c.rows[p.u];if(o&&o.sig===sg)return;
 var n=row(l,p);if(o)o.node.replaceWith(n);else c.rowsBox.appendChild(n);c.rows[p.u]={sig:sg,node:n}})}
 function build(l){
 var c={rows:{}},n=el('div','card lob'),open=l.status==='open',h=el('div','lh'),t=el('div');c.node=n;
