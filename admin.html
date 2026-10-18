@@ -58,6 +58,13 @@ input:focus{border-color:#fff}
 .rp{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;margin-top:10px}
 .rp p{white-space:pre-wrap;word-break:break-word;background:#000;border:1px solid var(--line);border-radius:8px;padding:10px}
 .rp .acts .btn{flex:1 1 140px}.warn{font-size:12px;color:#ef4444}
+textarea{width:100%;background:#000;border:1px solid var(--line);color:#fff;border-radius:10px;padding:13px;font:inherit;font-size:16px;outline:none;min-height:84px;resize:vertical}textarea:focus{border-color:#fff}
+#ntf{margin-bottom:14px}.ntnote{font-size:12px;color:var(--faint)}
+#kv{margin-bottom:14px}.kgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));margin-top:14px}
+.kc{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;align-content:start;background:#000}
+.kc .kimg{height:110px;display:flex;align-items:center;justify-content:center}.kc .kimg img{max-width:80%;max-height:100%;object-fit:contain}
+.kc b{font-size:15px;word-break:break-word}.kc .own{font-size:12px;color:var(--dim);min-height:18px}.kc .own.v{color:var(--faint)}
+.kc .acts .btn{flex:1 1 70px}.kc .tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 @media (max-width:520px){.pf{grid-template-columns:repeat(2,1fr)}.timer b{font-size:36px}.btn.big{width:100%}}
 </style></head><body>
 <div class="wrap">
@@ -72,6 +79,22 @@ input:focus{border-color:#fff}
 <div class="crow"><input type="text" id="nm" maxlength="40" placeholder="Lobby name, e.g. Game 1 – Dust2" autocomplete="off">
 <div class="seg" id="cm"><button type="button" data-m="3">3 players</button><button type="button" data-m="4" class="on">4 players</button></div>
 <button class="btn" id="mk" type="button">Create lobby</button></div><div class="msg" id="amsg" hidden></div></div>
+<div class="card" id="ntf"><h2>Send notification</h2>
+<div class="create" style="margin:12px 0 0"><input type="text" id="nt-title" maxlength="80" placeholder="Title, e.g. Game night Friday!" autocomplete="off">
+<textarea id="nt-body" maxlength="500" placeholder="Message (500 characters max)"></textarea>
+<div class="crow"><input type="text" id="nt-to" maxlength="16" placeholder="Gamertag (blank = everyone)" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn" id="nt-send" type="button">Send</button></div>
+<div class="msg" id="nt-msg" hidden></div></div>
+<div class="lbl" style="margin-top:16px">Recent notifications</div><div id="nt-list"></div></div>
+<div class="card" id="kv"><h2>Give knives</h2>
+<p class="dim" style="margin:6px 0 12px">Type a gamertag, then tap <b>Give</b> on a knife. It lands in their inventory right away and they get a notification.</p>
+<div class="crow"><input type="text" id="kv-to" maxlength="16" placeholder="Gamertag" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+<div class="msg" id="kv-msg" hidden></div><div class="kgrid" id="kv-grid"></div></div>
+<div class="card" id="bd"><h2>Badges</h2>
+<p class="dim" style="margin:8px 0 12px">Give a HOST or DEV badge. It shows right before the player's name everywhere on the site.</p>
+<div class="crow"><input type="text" id="bd-to" maxlength="16" placeholder="Gamertag" autocomplete="off" autocapitalize="off" spellcheck="false">
+<div class="seg" id="bd-k"><button type="button" data-b="host" class="on">Host</button><button type="button" data-b="dev">Dev</button></div>
+<button class="btn" id="bd-give" type="button">Give badge</button></div>
+<div class="msg" id="bd-msg" hidden></div><div class="lbl" style="margin-top:16px">Badge holders</div><div id="bd-list"></div></div>
 <div class="card" id="rep" hidden><h2><img src="assets/report.webp" alt="" onerror="this.remove()">Player reports <span id="repn" class="dim"></span></h2><div id="replist"></div></div>
 <div class="grid" id="lobs"></div>
 </main></div>
@@ -86,7 +109,17 @@ function err(e){var m=e.message||'';if(/BAD_ADMIN/.test(m))return'Wrong password
 function say(id,t){var e=$(id);e.hidden=!t;e.textContent=t||''}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 function poll(){return rpc('admin_state').then(function(r){off=new Date(r.now)-Date.now();S=r;render()}).then(function(){return rpc('admin_reports')}).then(renderRep).catch(function(e){if(/BAD_ADMIN/.test(e.message))logout()})}
-function login(){$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;try{sessionStorage.setItem('mlpw',PW)}catch(e){}poll();clearInterval(pt);pt=setInterval(poll,2000);setInterval(tick,250)}
+var bdKind='host';
+$('bd-k').onclick=function(e){var b=e.target.getAttribute('data-b');if(!b)return;bdKind=b;[].forEach.call($('bd-k').children,function(x){x.classList.toggle('on',x.getAttribute('data-b')===b)})};
+function setBd(u,b,on,done){say('bd-msg');return rpc('admin_set_badge',{p_user:u,p_badge:b,p_on:on}).then(function(){say('bd-msg',(on?'Gave the ':'Removed the ')+b.toUpperCase()+(on?' badge to ':' badge from ')+u+'.');if(done)done();loadBd()}).catch(function(e){say('bd-msg',err(e))})}
+$('bd-give').onclick=function(){var u=$('bd-to').value.trim();if(!u)return say('bd-msg','Type a gamertag.');setBd(u,bdKind,true,function(){$('bd-to').value=''})};
+function loadBd(){rpc('admin_badges').then(function(list){var box=$('bd-list');box.textContent='';
+if(!list.length){box.appendChild(el('div','dim','Nobody has a badge yet.'));return}
+list.forEach(function(o){o.badges.forEach(function(b){var r=el('div','rp');r.style.cssText='display:flex;align-items:center;gap:10px;margin-top:8px;padding:8px 12px';
+var im=el('img');im.src='assets/'+b+'.webp';im.alt='';im.style.cssText='width:22px;height:22px;object-fit:contain';im.onerror=function(){im.remove()};r.appendChild(im);
+r.appendChild(el('b',null,o.u));r.appendChild(el('span','dim',b.toUpperCase()));
+var x=el('button','btn ghost sm','Remove');x.type='button';x.style.marginLeft='auto';x.onclick=function(){setBd(o.u,b,false)};r.appendChild(x);box.appendChild(r)})})}).catch(function(e){say('bd-msg',err(e))})}
+function login(){$('login').hidden=true;$('app').hidden=false;$('out').hidden=false;try{sessionStorage.setItem('mlpw',PW)}catch(e){}poll();loadNtf();loadKnives();loadBd();clearInterval(pt);pt=setInterval(poll,2000);setInterval(tick,250)}
 function logout(){PW='';clearInterval(pt);try{sessionStorage.removeItem('mlpw')}catch(e){}$('app').hidden=true;$('out').hidden=true;$('login').hidden=false}
 $('login').onsubmit=function(e){e.preventDefault();PW=$('pw').value;say('lmsg');rpc('admin_state').then(function(){login()}).catch(function(x){PW='';say('lmsg',err(x))})};
 $('out').onclick=logout;
@@ -112,7 +145,7 @@ dd.onclick=function(){resolve(r.id,false)};a.appendChild(bb);a.appendChild(dd);c
 function resolve(id,ban){say('amsg');rpc('admin_resolve_report',{p_id:id,p_ban:ban}).then(poll).catch(function(e){say('amsg',err(e))})}
 function row(l,p){
 var res=p.res,base=p.streak,st={place:null,touched:false},r=el('div','prow'),top=el('div','ptop');
-top.appendChild(el('b',null,p.u));top.appendChild(el('span','dim','PR '+fmt(p.pr)+' \u00b7 streak '+p.streak+' \u00b7 '+Math.floor(+p.tokens||0).toLocaleString()+' tokens \u00b7 '+(+p.games||0)+' game'+(+p.games===1?'':'s')+' saved'));r.appendChild(top);
+top.appendChild(el('b',null,p.u));top.appendChild(el('span','dim',(p.spawn?'Spawn: '+p.spawn+' \u00b7 ':'')+'PR '+fmt(p.pr)+' \u00b7 streak '+p.streak+' \u00b7 '+Math.floor(+p.tokens||0).toLocaleString()+' tokens \u00b7 '+(+p.games||0)+' game'+(+p.games===1?'':'s')+' saved'));r.appendChild(top);
 var sg=el('div','seg'),pb=[];
 for(var n=1;n<=l.mode;n++)(function(n){var b=el('button','',PN[n]);b.type='button';b.onclick=function(){st.place=n;paint()};pb.push(b);sg.appendChild(b)})(n);
 r.appendChild(sg);
@@ -163,6 +196,41 @@ if(!c||c.sig!==sig){var nc=build(l);nc.sig=sig;if(c)c.node.replaceWith(nc.node);
 sync(l,c)});
 for(var id in cache)if(!ids[id]){cache[id].node.remove();delete cache[id]}
 if(!S.lobbies.length)box.appendChild(el('div','empty','No lobbies yet. Create one above.'));tick()}
+function loadNtf(){rpc('admin_notifications').then(renderNtf).catch(function(e){say('nt-msg',err(e))})}
+function renderNtf(list){var box=$('nt-list');box.textContent='';
+if(!list.length){box.appendChild(el('div','dim','Nothing sent yet.'));return}
+list.forEach(function(n){var c=el('div','rp'),t=el('div','ptop');
+t.appendChild(el('b',null,n.title));t.appendChild(el('span','dim',(n.to_user?'To '+n.to_user:'To everyone')+' · '+new Date(n.created_at).toLocaleString()+' · read by '+n.reads));c.appendChild(t);
+c.appendChild(el('p',null,n.body));
+var a=el('div','acts'),d=el('button','btn ghost sm','Delete');d.type='button';
+d.onclick=function(){if(confirm('Delete "'+n.title+'"? Players will no longer see it.'))rpc('admin_delete_notification',{p_id:n.id}).then(loadNtf).catch(function(e){say('nt-msg',err(e))})};
+a.appendChild(d);c.appendChild(a);box.appendChild(c)})}
+$('nt-send').onclick=function(){var t=$('nt-title').value.trim(),b=$('nt-body').value.trim(),to=$('nt-to').value.trim();
+if(!t)return say('nt-msg','Give the notification a title.');if(!b)return say('nt-msg','Write a message first.');
+if(!to&&!confirm('Send "'+t+'" to EVERYONE?'))return;
+say('nt-msg');var btn=$('nt-send');btn.disabled=true;
+rpc('admin_notify',{p_title:t,p_body:b,p_to:to||null}).then(function(){$('nt-title').value='';$('nt-body').value='';$('nt-to').value='';say('nt-msg','Sent to '+(to||'everyone')+'.');loadNtf()})
+.catch(function(e){say('nt-msg',err(e))}).then(function(){btn.disabled=false})};
+/* ---------- give knives ---------- */
+var KV=[];
+function kerr(e){var m=e.message||'';if(/PLAYER_NOT_FOUND/.test(m))return'No player called "'+$('kv-to').value.trim()+'".';if(/ALREADY_HAS/.test(m))return $('kv-to').value.trim()+' already has that knife.';
+if(/NOT_OWNED/.test(m))return'That player doesn’t have that knife.';if(/UNKNOWN_KNIFE/.test(m))return'Unknown knife. Run the new SQL in Supabase.';return err(e)}
+function loadKnives(){rpc('admin_knives').then(function(l){KV=l;renderKnives()}).catch(function(e){say('kv-msg',err(e))})}
+function ownText(k){if(!k.owners.length)return['In the vault',true];return[k.owners.map(function(o){return o.u+(+o.n>1?' ×'+o.n:'')}).join(', '),false]}
+function renderKnives(){var box=$('kv-grid');box.textContent='';
+KV.forEach(function(k){var c=el('div','kc'),im=el('div','kimg'),i=el('img');i.src='assets/'+k.image;i.alt='';i.onerror=function(){i.replaceWith(el('div','dim',k.name))};im.appendChild(i);c.appendChild(im);
+c.appendChild(el('b',null,k.name));var o=ownText(k),ow=el('div','own'+(o[1]?' v':''),o[0]);c.appendChild(ow);
+if(k.multi)c.appendChild(el('div','tag','Multiple copies allowed'));
+var a=el('div','acts'),g=el('button','btn sm','Give'),t=el('button','btn ghost sm','Take back');g.type=t.type='button';t.disabled=!k.owners.length;
+g.onclick=function(){giveKnife(k,false)};t.onclick=function(){takeKnife(k)};a.appendChild(g);a.appendChild(t);c.appendChild(a);box.appendChild(c)})}
+function giveKnife(k,move){var u=$('kv-to').value.trim();if(!u)return say('kv-msg','Type a gamertag first.');say('kv-msg');
+rpc('admin_give_knife',{p_user:u,p_key:k.key,p_move:!!move}).then(function(r){say('kv-msg','Gave the '+r.knife+' to '+r.player+'.');loadKnives()})
+.catch(function(e){var m=(e.message||'').match(/ALREADY_OWNED:(.*)$/);
+if(m){if(confirm(m[1]+' already has the '+k.name+' (only one exists). Move it to '+u+'?'))giveKnife(k,true);return}say('kv-msg',kerr(e))})}
+function takeKnife(k){var u=$('kv-to').value.trim().toLowerCase(),own=k.owners.filter(function(o){return o.u.toLowerCase()===u})[0]||(k.owners.length===1?k.owners[0]:null);
+if(!own)return say('kv-msg','Type the gamertag you want to take the '+k.name+' from.');
+if(!confirm('Take the '+k.name+' back from '+own.u+'?'))return;say('kv-msg');
+rpc('admin_take_knife',{p_user:own.u,p_key:k.key}).then(function(r){say('kv-msg','Took the '+r.knife+' back from '+r.player+'.');loadKnives()}).catch(function(e){say('kv-msg',kerr(e))})}
 function tick(){[].forEach.call(document.querySelectorAll('[data-t]'),function(b){var s=Math.ceil((new Date(b.getAttribute('data-t'))-(Date.now()+off))/1000);b.textContent=s>0?Math.floor(s/60)+':'+('0'+s%60).slice(-2):'LIVE'})}
 })();
 </script></body></html>
