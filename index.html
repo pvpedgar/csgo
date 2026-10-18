@@ -745,7 +745,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
   }
 
   /* ---------- HOST / DEV badges ---------- */
-  var BADGES={}, bT, BNAMES={host:'HOST',dev:'DEV'};
+  var BADGES={}, bT, BNAMES={host:'HOST',dev:'DEV',youtuber:'YOUTUBER',twitch:'TWITCH'};
   function badgeNode(b){
     var i=el('img','bdg'); i.src='assets/'+b+'.webp'; i.alt=BNAMES[b]; i.title=BNAMES[b];
     i.onclick=function(e){ e.stopPropagation(); e.preventDefault(); badgeToast(b); };
@@ -758,7 +758,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     t.appendChild(i); t.appendChild(document.createTextNode(BNAMES[b])); document.body.appendChild(t);
     setTimeout(function(){ t.remove(); },1600);
   }
-  function addName(parent,u){ ['host','dev'].forEach(function(b){ if((BADGES[u]||[]).indexOf(b)>-1) parent.appendChild(badgeNode(b)); }); parent.appendChild(document.createTextNode(u)); return parent; }
+  function addName(parent,u){ ['host','dev','youtuber','twitch'].forEach(function(b){ if((BADGES[u]||[]).indexOf(b)>-1) parent.appendChild(badgeNode(b)); }); parent.appendChild(document.createTextNode(u)); return parent; }
   function nameEl(tag,cls,u){ return addName(el(tag,cls),u); }
   function setName(node,u){ node.textContent=''; addName(node,u); }
   /* ---------- profile roles (given on the admin site) ---------- */
