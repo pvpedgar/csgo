@@ -890,6 +890,19 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     PRIZES['knife_'+k[0]]={name:k[1],img:'knives/'+k[0]+'.png',color:/winners/.test(k[0])?'#eab308':(/finalists/.test(k[0])?'#cbd5e1':'#e5e7eb'),pct:0};
   });
   PRIZES['1year_sticker']={name:'1 Year Sticker',img:'1year.png',color:'#22c55e',pct:0};
+  PRIZES['titan_holo']={name:'Titan Holo',img:'titan_holo.png',color:'#e5e7eb',pct:0};
+  PRIZES['wc25_sticker']={name:'WC25 Sticker',img:'wc25.png',color:'#e5e7eb',pct:0};
+  PRIZES['knife_black_web']={name:'Black Web',img:'knives/black_web.png',color:'#facc15',pct:0};
+  PRIZES['knife_blue_graffiti']={name:'Blue Graffiti',img:'knives/blue_graffiti.png',color:'#facc15',pct:0};
+  PRIZES['knife_easter_sunrise']={name:'Easter Sunrise',img:'knives/easter_sunrise.png',color:'#facc15',pct:0};
+  PRIZES['knife_green_web']={name:'Green Web',img:'knives/green_web.png',color:'#facc15',pct:0};
+  PRIZES['knife_shadow_kunai']={name:'Shadow Kunai',img:'knives/shadow_kunai.png',color:'#facc15',pct:0};
+  PRIZES['gloves_america']={name:'America Gloves',img:'gloves/america_gloves.png',color:'#facc15',pct:0};
+  PRIZES['gloves_blue_biker']={name:'Blue Biker Gloves',img:'gloves/blue_biker_gloves.png',color:'#facc15',pct:0};
+  PRIZES['gloves_cotton_candy_sport']={name:'Cotton Candy Sport Gloves',img:'gloves/cotton_candy_sport_gloves.png',color:'#facc15',pct:0};
+  PRIZES['gloves_orange_sport']={name:'Orange Sport Gloves',img:'gloves/orange_sport_gloves.png',color:'#facc15',pct:0};
+  PRIZES['gloves_purple_sport']={name:'Purple Sport Gloves',img:'gloves/purple_sport_gloves.png',color:'#facc15',pct:0};
+  PRIZES['gloves_shy']={name:'Shy Gloves',img:'gloves/shy_gloves.png',color:'#facc15',pct:0};
   /* any item the host gives out shows up even if this page doesn't know it yet: its name + picture come from the database */
   function prizeFor(r){
     return PRIZES[r.item]||(PRIZES[r.item]={name:r.name||String(r.item).replace(/_/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase()}),img:r.image||null,color:'#e5e7eb',pct:0});
@@ -1156,7 +1169,8 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
       var w1=h.places.p1||0, tot=[1,2,3,4].reduce(function(a,n){ return a+(h.places['p'+n]||0); },0), rt=el('div','places two');
       function tile(label,val,sub){ var c=el('div','plc-card'); c.appendChild(el('b',null,val)); c.appendChild(el('small',null,label)); if(sub) c.appendChild(el('small',null,sub)); rt.appendChild(c); }
       if(p&&p.kills!==undefined&&p.deaths!==undefined){ var kd=Number(p.deaths)>0?Number(p.kills)/Number(p.deaths):Number(p.kills); tile('K/D ratio',kd.toFixed(2),p.kills+' K \u00b7 '+p.deaths+' D'); }
-      tile('Win %',tot>0?(Math.round(w1/tot*1000)/10)+'%':'\u2014',tot>0?w1+' of '+tot+' game'+(tot===1?'':'s'):'no games yet');
+      var hasL=p&&p.wins!==undefined&&p.losses!==undefined&&p.losses!==null, gw=hasL?Number(p.wins)||0:w1, gp=hasL?gw+(Number(p.losses)||0):tot;
+      tile('Win %',gp>0?(Math.round(gw/gp*1000)/10)+'%':'\u2014',gp>0?gw+' of '+gp+' game'+(gp===1?'':'s'):'no games yet');
       box.appendChild(rt);
       var ms=h.matches.slice().reverse(), vals=[Number(h.start)].concat(ms.map(function(m){return Number(m.pr_after)}));
       var hh=el('div','hh'), pi=el('img'); pi.src='assets/pr.webp'; pi.alt=''; pi.onerror=function(){pi.remove()};
