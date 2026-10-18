@@ -144,6 +144,15 @@
   .row .mid{flex:1;min-width:0}
   .rname{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .rsub{font-size:12px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tiercard{border:1px solid var(--line);border-radius:12px;padding:16px;background:#000;margin-bottom:10px}
+  .tiercard .trow{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .tiercard .tname{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+  .tiercard .tpr{font-size:13px;color:var(--dim);white-space:nowrap}
+  .tiercard .tnext{margin-top:4px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .tiercard .tbar{margin-top:12px;height:10px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden}
+  .tiercard .tfill{height:100%;border-radius:999px;background:#fff;transition:width .4s}
+  body.in-app .tiercard{background:var(--surface);border:1px solid var(--hair);border-radius:20px}
+  body.in-app .tiercard .tnext{text-transform:none;letter-spacing:0}
   .rpr{text-align:right;flex:none}
   .rpr b{display:block;font-size:18px;line-height:1.1}
   .rpr small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
@@ -728,6 +737,21 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
   function fmtTok(n){ return (Math.floor(Number(n)||0)).toLocaleString(); }
   function fmtUsd(n){ return '$'+((Number(n)||0)/1000).toFixed(2); }
   function fmtPR(n){ return String(parseFloat((Number(n)||0).toFixed(2))); }
+  /* ---------- PR tiers ---------- */
+  var TIERS=[{name:'Beginner',min:0,color:'#22c55e'},{name:'Rising',min:5000,color:'#3b82f6'},{name:'Challenger',min:7000,color:'#a855f7'},{name:'Master',min:9000,color:'#ef4444'},{name:'Mythic',min:12000,color:'#f97316'},{name:'God',min:15000,color:'#facc15'}];
+  function tierOf(pr){ pr=Number(pr)||0; var i=0; for(var k=0;k<TIERS.length;k++){ if(pr>=TIERS[k].min) i=k; } return i; }
+  function tierNode(pr){
+    pr=Math.max(0,Number(pr)||0); var i=tierOf(pr), t=TIERS[i], nx=TIERS[i+1];
+    var c=el('div','tiercard'), top=el('div','trow');
+    var tnm=el('div','tname',t.name); tnm.style.color=t.color; top.appendChild(tnm);
+    top.appendChild(el('div','tpr',nx?(Math.floor(pr).toLocaleString()+' / '+nx.min.toLocaleString()+' PR'):(Math.floor(pr).toLocaleString()+' PR')));
+    c.appendChild(top);
+    c.appendChild(el('div','tnext',nx?('Progress to '+nx.name):'Max tier reached'));
+    var bar=el('div','tbar'), fill=el('div','tfill');
+    fill.style.width=(nx?Math.max(0,Math.min(100,(pr-t.min)/(nx.min-t.min)*100)):100)+'%';
+    fill.style.background=t.color; fill.style.boxShadow='0 0 10px '+t.color+'99'; bar.appendChild(fill); c.appendChild(bar);
+    return c;
+  }
   function el(tag,cls,text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
   function avatarNode(src,size){
     var d=el('div','avatar '+(size||'')), i=document.createElement('img');
@@ -792,6 +816,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     $('pfp-rm').hidden=!ME.avatar; $('pfp-btn').textContent=ME.avatar?'Change photo':'Upload photo';
     $('my-bio').value=ME.bio||''; $('bio-count').textContent=($('my-bio').value.length)+'/200';
     var st=$('my-stats'); st.replaceWith(Object.assign(statsNode(ME),{id:'my-stats'}));
+    var tn=tierNode(ME.pr), ot=$('my-tier'); tn.id='my-tier'; if(ot) ot.replaceWith(tn); else $('my-stats').parentNode.insertBefore(tn,$('my-stats'));
   }
   $('my-bio').addEventListener('input',function(){ $('bio-count').textContent=this.value.length+'/200'; });
   $('bio-save').onclick=function(){
@@ -835,7 +860,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     var mid=el('div','mid'); mid.appendChild(nameEl('div','rname',p.username));
     mid.appendChild(el('div','rsub',p.wins+' W \u00b7 '+p.kills+' K \u00b7 '+p.aces+' A \u00b7 '+p.deaths+' D'));
     b.appendChild(mid);
-    var pr=el('div','rpr'); pr.appendChild(el('b',null,fmtPR(p.pr))); pr.appendChild(el('small',null,'PR')); b.appendChild(pr);
+    var pr=el('div','rpr'); pr.appendChild(el('b',null,fmtPR(p.pr))); pr.appendChild(el('small',null,'PR \u00b7 '+TIERS[tierOf(p.pr)].name)); b.appendChild(pr);
     b.onclick=function(){ openModal(p); };
     return b;
   }
@@ -862,7 +887,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     var head=el('div','mhead'); head.appendChild(avatarNode(p.avatar,'xl')); head.appendChild(nameEl('h2',null,p.username)); head.appendChild(rolesNode(p.username));
     head.appendChild(el('div','mbio',p.bio||'No bio yet.'));
     if(p.joined) head.appendChild(el('div','mjoin','Joined '+new Date(p.joined).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})));
-    body.appendChild(head); body.appendChild(statsNode(p)); body.appendChild(invNode(p.username)); body.appendChild(histNode(p.username,p));
+    body.appendChild(head); body.appendChild(tierNode(p.pr)); body.appendChild(statsNode(p)); body.appendChild(invNode(p.username)); body.appendChild(histNode(p.username,p));
     if(!ME||p.username!==ME.username){ body.appendChild(messageNode(p.username,'Send message')); body.appendChild(reportNode(p.username)); }
     $('modal').hidden=false;
   }
