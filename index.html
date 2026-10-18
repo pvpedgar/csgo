@@ -284,6 +284,10 @@
   .bdg-t{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;border:1px solid currentColor;border-radius:4px;padding:1px 5px;margin-right:6px;vertical-align:2px;cursor:pointer}
   .bdg-toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#000;font-weight:700;letter-spacing:.14em;padding:10px 20px;border-radius:999px;z-index:999;display:flex;align-items:center;gap:8px;box-shadow:0 4px 24px rgba(0,0,0,.6)}
   .bdg-toast .bdg{margin:0;cursor:default}
+  .roles{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+  .roles:empty{display:none}
+  .role{display:inline-block;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;line-height:1.3;white-space:nowrap}
+  .role.top{background:#fff;color:#000;border-color:#fff}
   .places.two{grid-template-columns:repeat(2,1fr);margin-top:0}
   .places.two .plc-card{padding:14px 6px}.places.two .plc-card b{font-size:28px}
 </style>
@@ -483,6 +487,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
         <div class="phero">
           <div id="my-avatar"></div>
           <h2 id="my-name"></h2>
+          <div class="roles" id="my-roles"></div>
           <div class="photo-btns">
             <button class="btn ghost small" type="button" id="pfp-btn">Upload photo</button>
             <button class="btn ghost small" type="button" id="pfp-rm" hidden>Remove</button>
@@ -549,7 +554,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
       <div class="msg" id="store-msg" role="alert" style="margin-bottom:12px"></div>
       <div class="sgrid" id="store-items"></div>
       <div class="hh"><h3>My items</h3></div>
-      <p class="sub" style="margin:0 0 10px">You can sell a Halloween Knife for 400 tokens, a Kunai Knife for 3,000 tokens, or a Jon Taffer Sticker for 100 tokens.</p>
+      <p class="sub" style="margin:0 0 10px">You can sell a Halloween Knife for 1500 tokens, a Kunai Knife for 3,000 tokens, or a Jon Taffer Sticker for 100 tokens.</p>
       <div class="sgrid invbox" id="inv"></div>
     </div>
   </section>
@@ -756,7 +761,23 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
   function addName(parent,u){ ['host','dev'].forEach(function(b){ if((BADGES[u]||[]).indexOf(b)>-1) parent.appendChild(badgeNode(b)); }); parent.appendChild(document.createTextNode(u)); return parent; }
   function nameEl(tag,cls,u){ return addName(el(tag,cls),u); }
   function setName(node,u){ node.textContent=''; addName(node,u); }
+  /* ---------- profile roles (given on the admin site) ---------- */
+  var ROLES={}, RDEFS={}, ROLEORD=[];
+  function rolesNode(u){
+    var w=el('div','roles'); (ROLES[u]||[]).forEach(function(k){
+      if(!RDEFS[k]) return; var c=el('span','role'+(/^tournament_winner/.test(k)?' top':''),RDEFS[k]); w.appendChild(c); });
+    return w;
+  }
+  function renderMyRoles(){ var b=$('my-roles'); if(b&&ME) b.replaceWith(Object.assign(rolesNode(ME.username),{id:'my-roles'})); }
+  function loadRoles(){
+    call('get_roles').then(function(r){
+      r=r||{}; var defs={}; (r.defs||[]).forEach(function(d){ defs[d.key]=d.name; });
+      var sig=JSON.stringify([defs,r.map||{}]); if(sig===JSON.stringify([RDEFS,ROLES])) return;
+      RDEFS=defs; ROLES=r.map||{}; renderMyRoles();
+    }).catch(function(){});
+  }
   function loadBadges(){
+    loadRoles();
     call('badges_map').then(function(m){
       m=m||{}; if(JSON.stringify(m)===JSON.stringify(BADGES)) return; BADGES=m;
       if(ME){ setName($('home-user'),ME.username); setName($('my-name'),ME.username); }
@@ -766,7 +787,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
 
   /* profile */
   function renderMe(){
-    setName($('home-user'),ME.username); setName($('my-name'),ME.username);
+    setName($('home-user'),ME.username); setName($('my-name'),ME.username); renderMyRoles();
     var av=$('my-avatar'); av.textContent=''; av.appendChild(avatarNode(ME.avatar,'big'));
     $('pfp-rm').hidden=!ME.avatar; $('pfp-btn').textContent=ME.avatar?'Change photo':'Upload photo';
     $('my-bio').value=ME.bio||''; $('bio-count').textContent=($('my-bio').value.length)+'/200';
@@ -838,7 +859,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
 
   function openModal(p){
     var body=$('modal-body'); body.textContent='';
-    var head=el('div','mhead'); head.appendChild(avatarNode(p.avatar,'xl')); head.appendChild(nameEl('h2',null,p.username));
+    var head=el('div','mhead'); head.appendChild(avatarNode(p.avatar,'xl')); head.appendChild(nameEl('h2',null,p.username)); head.appendChild(rolesNode(p.username));
     head.appendChild(el('div','mbio',p.bio||'No bio yet.'));
     if(p.joined) head.appendChild(el('div','mjoin','Joined '+new Date(p.joined).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})));
     body.appendChild(head); body.appendChild(statsNode(p)); body.appendChild(invNode(p.username)); body.appendChild(histNode(p.username,p));
@@ -913,7 +934,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     };
     w.appendChild(b); w.appendChild(box); return w;
   }
-  var SELL={halloween_knife:400,kunai_knife:3000,jt_sticker:100,jt_sticker2:100};
+  var SELL={halloween_knife:1500,kunai_knife:3000,jt_sticker:100,jt_sticker2:100};
   function sellItem(key,b){
     var P=PRIZES[key]; if(!confirm('Sell 1 '+P.name+' for '+fmtTok(SELL[key])+' tokens?')) return;
     msg('store-msg'); b.disabled=true;
