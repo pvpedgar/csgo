@@ -284,6 +284,8 @@
   .bdg-t{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;border:1px solid currentColor;border-radius:4px;padding:1px 5px;margin-right:6px;vertical-align:2px;cursor:pointer}
   .bdg-toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#000;font-weight:700;letter-spacing:.14em;padding:10px 20px;border-radius:999px;z-index:999;display:flex;align-items:center;gap:8px;box-shadow:0 4px 24px rgba(0,0,0,.6)}
   .bdg-toast .bdg{margin:0;cursor:default}
+  .places.two{grid-template-columns:repeat(2,1fr);margin-top:0}
+  .places.two .plc-card{padding:14px 6px}.places.two .plc-card b{font-size:28px}
 </style>
 <style id="app-ui">
 /* Logged-in UI. Everything is scoped to body.in-app, so the login screen is untouched. */
@@ -839,7 +841,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     var head=el('div','mhead'); head.appendChild(avatarNode(p.avatar,'xl')); head.appendChild(nameEl('h2',null,p.username));
     head.appendChild(el('div','mbio',p.bio||'No bio yet.'));
     if(p.joined) head.appendChild(el('div','mjoin','Joined '+new Date(p.joined).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})));
-    body.appendChild(head); body.appendChild(statsNode(p)); body.appendChild(invNode(p.username)); body.appendChild(histNode(p.username));
+    body.appendChild(head); body.appendChild(statsNode(p)); body.appendChild(invNode(p.username)); body.appendChild(histNode(p.username,p));
     if(!ME||p.username!==ME.username){ body.appendChild(messageNode(p.username,'Send message')); body.appendChild(reportNode(p.username)); }
     $('modal').hidden=false;
   }
@@ -1122,13 +1124,19 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     pts.forEach(function(p){ var c=document.createElementNS(NS,'circle'); c.setAttribute('cx',p[0]); c.setAttribute('cy',p[1]); c.setAttribute('r','3.2'); c.setAttribute('fill','#fff'); svg.appendChild(c); });
     return svg;
   }
-  function histNode(u){
+  function histNode(u,p){
     var box=el('div','hist'); box.appendChild(el('div','empty','Loading\u2026'));
     call('player_history',{p_username:u}).then(function(h){
       box.textContent='';
       var pw=el('div','places');
       [1,2,3,4].forEach(function(n){ var c=el('div','plc-card'); c.appendChild(placeImg(n)); c.appendChild(el('b',null,String(h.places['p'+n]||0))); c.appendChild(el('small',null,PL[n])); pw.appendChild(c); });
       box.appendChild(pw);
+      /* K/D ratio + win % (simple math from the totals and the placement counts) */
+      var w1=h.places.p1||0, tot=[1,2,3,4].reduce(function(a,n){ return a+(h.places['p'+n]||0); },0), rt=el('div','places two');
+      function tile(label,val,sub){ var c=el('div','plc-card'); c.appendChild(el('b',null,val)); c.appendChild(el('small',null,label)); if(sub) c.appendChild(el('small',null,sub)); rt.appendChild(c); }
+      if(p&&p.kills!==undefined&&p.deaths!==undefined){ var kd=Number(p.deaths)>0?Number(p.kills)/Number(p.deaths):Number(p.kills); tile('K/D ratio',kd.toFixed(2),p.kills+' K \u00b7 '+p.deaths+' D'); }
+      tile('Win %',tot>0?(Math.round(w1/tot*1000)/10)+'%':'\u2014',tot>0?w1+' of '+tot+' game'+(tot===1?'':'s'):'no games yet');
+      box.appendChild(rt);
       var ms=h.matches.slice().reverse(), vals=[Number(h.start)].concat(ms.map(function(m){return Number(m.pr_after)}));
       var hh=el('div','hh'), pi=el('img'); pi.src='assets/pr.webp'; pi.alt=''; pi.onerror=function(){pi.remove()};
       hh.appendChild(pi); hh.appendChild(el('h3',null,'PR history')); hh.appendChild(el('span',null,fmtPR(vals[vals.length-1])+' PR')); box.appendChild(hh);
@@ -1145,7 +1153,7 @@ body.in-app .sheet{background:#0a0a0a;border-color:rgba(255,255,255,.16);border-
     }).catch(function(err){ box.textContent=''; box.appendChild(el('div','empty',friendly(err))); });
     return box;
   }
-  function loadMyStats(){ var b=$('stats-body'); b.textContent=''; if(ME){ b.appendChild(statsNode(ME)); b.appendChild(histNode(ME.username)); } }
+  function loadMyStats(){ var b=$('stats-body'); b.textContent=''; if(ME){ b.appendChild(statsNode(ME)); b.appendChild(histNode(ME.username,ME)); } }
   function reportNode(u){
     var w=el('div','rep'), b=el('button','btn ghost small'), i=el('img'); b.type='button';
     i.src='assets/report.webp'; i.alt=''; i.onerror=function(){i.remove()}; b.appendChild(i); b.appendChild(document.createTextNode(' Report player'));
