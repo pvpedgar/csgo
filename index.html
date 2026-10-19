@@ -13,6 +13,89 @@
         <style id="app-ui">/* Logged-in UI. Everything is scoped to body.in-app, so the login screen is untouched. */body.in-app { --surface: rgba(255,255,255,.05); --hair: rgba(255,255,255,.1); padding-top: 0; } body.in-app header.top { display: none; } body.in-app .wrap { max-width: 680px; padding: 0 16px 56px; } body.in-app footer { text-transform: none; letter-spacing: 0; margin-top: 48px; } body.in-app #home { min-height: 70vh; } /* app bar + dropdown */.appbar { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #000; margin: 0 -16px; padding: calc(env(safe-area-inset-top) + 10px) 16px 10px; border-bottom: 1px solid var(--hair); } .menu-btn { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 14px 0 13px; border-radius: 999px; background: var(--surface); border: 1px solid rgba(255,255,255,.18); color: #fff; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; } .menu-btn:active { transform: scale(.97); } .menu-btn .chev { transition: transform .18s; opacity: .7; } .menu-btn[aria-expanded="true"] .chev { transform: rotate(180deg); } .menu-btn .dot { position: absolute; top: 6px; right: 6px; margin: 0; width: 9px; height: 9px; background: #fff; box-shadow: 0 0 0 2px #000; } .bar-logo { height: 30px; width: auto; max-width: 40%; object-fit: contain; display: block; } .bar-logo:not([src]) { display: none; } .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 0; } .menu { position: absolute; z-index: 1; top: calc(100% + 8px); left: 12px; width: min(340px,calc(100vw - 24px)); max-height: calc(100dvh - 96px); overflow: auto; background: #0a0a0a; border: 1px solid rgba(255,255,255,.16); border-radius: 24px; padding: 8px; box-shadow: 0 28px 70px rgba(0,0,0,.9); transform-origin: top left; animation: menuin .16s ease-out; } @keyframes menuin{ from {  opacity: 0;  transform: translateY(-6px) scale(.97); } } .menu-user { padding: 12px 14px 10px; } .menu-user small { display: block; font-size: 13px; color: var(--dim); } .menu-user #home-user { display: block; font-size: 20px; font-weight: 700; letter-spacing: -.01em; word-break: break-all; } .menu-sep { height: 1px; background: var(--hair); margin: 6px 8px; } .mi { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 52px; padding: 0 14px; border: 0; border-radius: 16px; background: none; color: rgba(255,255,255,.72); font: inherit; font-size: 16px; font-weight: 500; text-align: left; cursor: pointer; } .mi svg { flex: none; } .mi .dot { margin: 0 4px 0 auto; width: 9px; height: 9px; } .mi[aria-selected="true"] { background: #fff; color: #000; font-weight: 600; } .mi[aria-selected="true"] .dot { background: #000; } @media (hover:hover){ .mi:hover:not([aria-selected="true"]) {  background: rgba(255,255,255,.08);  color: #fff; } } .mi:focus-visible, .menu-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; } /* shared components */body.in-app .card { background: var(--surface); border: 1px solid var(--hair); border-radius: 24px; padding: 20px; } body.in-app h2 { text-transform: none; letter-spacing: -.02em; } body.in-app .ptitle { font-size: 30px; line-height: 1.1; margin: 22px 0 4px; } body.in-app .sub { font-size: 15px; margin: 6px 0 18px; } body.in-app .pane { padding-top: 2px; } body.in-app .btn { border-radius: 999px; min-height: 52px; padding: 0 22px; font-size: 16px; font-weight: 600; letter-spacing: 0; text-transform: none; } body.in-app .btn.small { min-height: 40px; padding: 0 16px; font-size: 14px; } body.in-app .btn.ghost { background: transparent; border-color: rgba(255,255,255,.28); } body.in-app input[type=text], body.in-app textarea { background: var(--surface); border-color: transparent; border-radius: 16px; } body.in-app input[type=text]:focus, body.in-app textarea:focus { border-color: #fff; background: #000; } body.in-app label.f>span.l { text-transform: none; letter-spacing: 0; font-size: 14px; } body.in-app .msg { border-radius: 14px; } body.in-app :is(.stat small,.rpr small,.hh h3,.gbanner small,.tokbal small,.lbl2,.plc-card small,.rsp,.badge,.newb,.rate,.mjoin,.cstitle,.tierbig,.spawn small,.info span:first-child,.chip span,.soon) { text-transform: none; letter-spacing: 0; } body.in-app .hh h3 { font-size: 18px; letter-spacing: -.01em; } body.in-app .hh { margin: 26px 0 10px; } /* profile */body.in-app .prof-grid { display: grid; grid-template-columns: 1fr; gap: 14px; } .phero { display: grid; justify-items: center; gap: 12px; text-align: center; padding: 18px 0 6px; } body.in-app .phero .avatar.big { width: 124px; height: 124px; border: 2px solid #fff; } body.in-app .phero h2 { font-size: 32px; line-height: 1.1; word-break: break-all; } body.in-app .photo-btns { justify-content: center; } body.in-app .stats5 { grid-template-columns: repeat(2,1fr); gap: 10px; } body.in-app .stats5 .stat { background: var(--surface); border: 1px solid var(--hair); border-radius: 20px; padding: 16px; } body.in-app .stats5 .stat b { font-size: 30px; } body.in-app .stats5 .stat:nth-child(-n+2) b { font-size: 42px; } body.in-app .stats5 .stat small { font-size: 14px; color: var(--dim); } body.in-app .stats5 .stat .sico { position: static; display: block; width: 28px; height: 28px; margin-bottom: 12px; } body.in-app .stats5 .stat:nth-child(-n+2) .sico { width: 38px; height: 38px; } body.in-app .stats5 .stat.wide { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: center; } body.in-app .stats5 .stat.wide b, body.in-app .stats5 .stat.wide small { grid-column: 2; } body.in-app .stats5 .stat.wide .sico { grid-column: 1; grid-row: 1/3; width: 48px; height: 48px; margin: 0; } body.in-app .stats5 .stat.wide b { font-size: 34px; } body.in-app #pf-msg.show { position: fixed; left: 16px; right: 16px; bottom: calc(20px + env(safe-area-inset-bottom)); max-width: 480px; margin: 0 auto; z-index: 60; background: #000; box-shadow: 0 12px 40px rgba(0,0,0,.8); } body.in-app #pf-msg.show.ok { background: #fff; color: #000; } /* lists, rows, store, panels */body.in-app .row { min-height: 66px; padding: 12px 14px; border-radius: 18px; background: var(--surface); border-color: var(--hair); } body.in-app .row.me { border-color: #fff; } body.in-app :is(.mrow,.sitem,.mc,.plc-card) { border-radius: 18px; background: var(--surface); border-color: var(--hair); } body.in-app .mc.new { border-color: #fff; } body.in-app .gbanner { border-radius: 22px; margin: 12px 0 0; background: var(--surface); } body.in-app .tokbal { border-radius: 22px; background: var(--surface); border-color: rgba(255,255,255,.5); } body.in-app .chestcard { border-radius: 28px; } body.in-app .prchart { border-radius: 18px; background: var(--surface); border-color: var(--hair); } body.in-app .sgrid { grid-template-columns: repeat(auto-fill,minmax(min(100%,156px),1fr)); } body.in-app .info { border-radius: 18px; border-color: var(--hair); } body.in-app .rchip { border-color: var(--hair); } body.in-app .sheet { background: #0a0a0a; border-color: rgba(255,255,255,.16); border-radius: 28px 28px 0 0; } @media (min-width:520px){ body.in-app .sheet {  border-radius: 28px; } } @media (max-width:420px){ body.in-app .ptitle {  font-size: 26px; }  body.in-app .stats5 .stat:nth-child(-n+2) b {  font-size: 36px; }  body.in-app .phero h2 {  font-size: 28px; } }</style>
         <style id="panel-css">#p-admin { --dim: rgba(255,255,255,.62); --faint: rgba(255,255,255,.38); --line: rgba(255,255,255,.16); --ls: rgba(255,255,255,.4); --panel: #0b0b0b; } #p-admin h2:not(.ptitle) { font-size: 20px; text-transform: uppercase; letter-spacing: -.01em; } #p-admin .card { margin-bottom: 14px; padding: 18px; } #p-admin .card h2 { line-height: 1.2; } #p-admin .btn { width: auto; display: inline-flex; min-height: 44px; padding: 0 18px; font-size: 14px; } #p-admin .btn.sm { min-height: 38px; padding: 0 14px; font-size: 13px; } #p-admin .btn.big { min-height: 52px; padding: 0 26px; font-size: 16px; } #p-admin input[type=text], #p-admin input[type=password], #p-admin textarea { width: 100%; background: #000; border: 1px solid var(--line); color: #fff; border-radius: 10px; padding: 13px; font: inherit; font-size: 16px; outline: none; } #p-admin textarea { min-height: 84px; resize: vertical; } #p-admin input:focus, #p-admin textarea:focus { border-color: #fff; } #p-admin .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; flex-wrap: wrap; } #p-admin .seg button { background: none; border: 0; color: var(--dim); font: inherit; font-weight: 700; font-size: 13px; padding: 9px 18px; border-radius: 999px; cursor: pointer; } #p-admin .seg button.on { background: #fff; color: #000; } #p-admin .crow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; } #p-admin .crow input { flex: 1; min-width: 200px; } #p-admin .msg { display: block; border: 1px dashed var(--ls); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-top: 10px; } #p-admin .dim { color: var(--dim); font-size: 13px; } #p-admin .lbl { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; } #p-admin .acts { display: flex; gap: 10px; flex-wrap: wrap; } #p-admin .acts .btn { flex: 1 1 120px; } #p-admin .rp { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 8px; margin-top: 10px; } #p-admin .rp p { white-space: pre-wrap; word-break: break-word; background: #000; border: 1px solid var(--line); border-radius: 8px; padding: 10px; } #p-admin .rp .acts .btn { flex: 1 1 140px; } #p-admin .warn { font-size: 12px; color: #ef4444; } #p-admin .ptop { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; } #p-admin .empty { color: var(--dim); text-align: center; padding: 30px 0; } #p-host { --dim: rgba(255,255,255,.62); --faint: rgba(255,255,255,.38); --line: rgba(255,255,255,.16); --ls: rgba(255,255,255,.4); --panel: #0b0b0b; } #p-host h2:not(.ptitle) { font-size: 20px; text-transform: uppercase; letter-spacing: -.01em; } #p-host .card { margin-bottom: 14px; padding: 18px; } #p-host .card h2 { line-height: 1.2; } #p-host .btn { width: auto; display: inline-flex; min-height: 44px; padding: 0 18px; font-size: 14px; } #p-host .btn.sm { min-height: 38px; padding: 0 14px; font-size: 13px; } #p-host .btn.big { min-height: 52px; padding: 0 26px; font-size: 16px; } #p-host input[type=text], #p-host input[type=password], #p-host textarea { width: 100%; background: #000; border: 1px solid var(--line); color: #fff; border-radius: 10px; padding: 13px; font: inherit; font-size: 16px; outline: none; } #p-host textarea { min-height: 84px; resize: vertical; } #p-host input:focus, #p-host textarea:focus { border-color: #fff; } #p-host .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; flex-wrap: wrap; } #p-host .seg button { background: none; border: 0; color: var(--dim); font: inherit; font-weight: 700; font-size: 13px; padding: 9px 18px; border-radius: 999px; cursor: pointer; } #p-host .seg button.on { background: #fff; color: #000; } #p-host .crow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; } #p-host .crow input { flex: 1; min-width: 200px; } #p-host .msg { display: block; border: 1px dashed var(--ls); border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-top: 10px; } #p-host .dim { color: var(--dim); font-size: 13px; } #p-host .lbl { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; } #p-host .acts { display: flex; gap: 10px; flex-wrap: wrap; } #p-host .acts .btn { flex: 1 1 120px; } #p-host .rp { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 8px; margin-top: 10px; } #p-host .rp p { white-space: pre-wrap; word-break: break-word; background: #000; border: 1px solid var(--line); border-radius: 8px; padding: 10px; } #p-host .rp .acts .btn { flex: 1 1 140px; } #p-host .warn { font-size: 12px; color: #ef4444; } #p-host .ptop { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; } #p-host .empty { color: var(--dim); text-align: center; padding: 30px 0; } #p-admin #ad-rep h2 { display: flex; align-items: center; gap: 10px; } #p-admin #ad-rep h2 img { width: 28px; height: 28px; object-fit: contain; } #p-admin .kgrid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill,minmax(min(100%,150px),1fr)); margin-top: 14px; } #p-admin .kc { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 8px; align-content: start; background: #000; } #p-admin .kc .kimg { height: 110px; display: flex; align-items: center; justify-content: center; } #p-admin .kc .kimg img { max-width: 80%; max-height: 100%; object-fit: contain; } #p-admin .kc b { font-size: 15px; word-break: break-word; } #p-admin .kc .own { font-size: 12px; color: var(--dim); min-height: 18px; } #p-admin .kc .own.v { color: var(--faint); } #p-admin .kc .acts .btn { flex: 1 1 70px; } #p-admin .kc .tag { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); } #p-admin .bdg { height: 18px; width: 18px; object-fit: contain; vertical-align: -3px; margin-right: 6px; cursor: default; } #p-host .create { display: grid; gap: 12px; margin: 18px 0; } #p-host .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill,minmax(min(100%,420px),1fr)); } #p-host .lob { display: grid; gap: 14px; align-items: normal; align-content: start; margin-bottom: 0; padding: 18px; } #p-host .lh { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; } #p-host .lh h2 { word-break: break-word; } #p-host .lh small { color: var(--dim); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; } #p-host .timer { display: flex; align-items: center; gap: 14px; border: 1px solid #fff; border-radius: 12px; padding: 12px 16px; } #p-host .timer img { width: 52px; height: 52px; object-fit: contain; } #p-host .timer b { font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em; margin-left: auto; } #p-host .timer small { color: var(--dim); letter-spacing: .12em; text-transform: uppercase; font-size: 12px; } #p-host .chips { display: flex; flex-wrap: wrap; gap: 8px; } #p-host .chip { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px 5px 6px; font-size: 14px; color: var(--dim); cursor: default; } #p-host .chip span { display: inline; padding: 0; border: 0; border-radius: 0; font-size: inherit; font-weight: inherit; letter-spacing: 0; text-transform: none; color: inherit; transition: none; } #p-host .chip img { width: 22px; height: 22px; object-fit: contain; filter: grayscale(1) brightness(1.7); } #p-host .chip.p { background: #fff; color: #000; border-color: #fff; font-weight: 600; } #p-host .chip.p img { filter: grayscale(1) brightness(0); } #p-host .chip img.bdg, #p-host .chip.p img.bdg { filter: none; width: 18px; height: 18px; } #p-host .bdg { height: 18px; width: 18px; object-fit: contain; vertical-align: -3px; margin-right: 6px; cursor: default; } #p-host .bdg.txt { display: inline-block; width: auto; height: auto; font-size: 10px; font-weight: 700; letter-spacing: .1em; border: 1px solid currentColor; border-radius: 4px; padding: 0 5px; vertical-align: 1px; } #p-host .prow { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 10px; } #p-host .prow .acts { align-items: center; } #p-host .okl { font-size: 13px; color: #22c55e; flex: 1 1 100%; } #p-host .pf { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; } #p-host .pf label { display: grid; gap: 4px; min-width: 0; } #p-host .pf span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); } #p-host .pf input { width: 100%; min-width: 0; background: #000; border: 1px solid var(--line); color: #fff; border-radius: 8px; padding: 10px 8px; font: inherit; font-size: 16px; outline: none; } #p-host .pf input:focus { border-color: #fff; } #p-host .pf .usd { font-size: 11px; color: var(--dim); min-height: 16px; } #p-host .pvw { font-size: 13px; color: var(--dim); min-height: 18px; line-height: 1.4; } #p-host .pvw.up { color: #22c55e; } #p-host .pvw.dn { color: #ef4444; } #p-host #ho-ntf { margin-bottom: 14px; } @media (max-width:620px){ #p-host .pf {  grid-template-columns: repeat(2,1fr); }  #p-host .timer b {  font-size: 36px; }  #p-host .btn.big {  width: 100%; } }</style>
         <style id="appbar-css">.appbar { position: relative; width: 100%; } .appbar .ab-menu { position: relative; display: flex; align-items: center; justify-content: center; padding: 10px; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; } .appbar .ab-menu:active { transform: scale(.97); } .appbar .ab-menu:focus-visible { outline: 2px solid #fff; outline-offset: 2px; } .appbar #menu-dot { position: absolute; top: 6px; right: 6px; margin: 0 0 0 6px; } .appbar .ab-label { position: absolute; left: 50%; transform: translateX(-50%); font-weight: 600; padding: 0 8px; text-align: center; font-size: 20px; line-height: 28px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; pointer-events: none; } .appbar .ab-right { position: absolute; top: 0; bottom: 0; right: 0; display: flex; align-items: center; padding-right: 16px; height: 100%; } .appbar .ab-logo-btn { height: 100%; display: flex; align-items: center; background: none; border: 0; padding: 0; cursor: pointer; } .appbar .ab-logo { height: 100%; width: auto; object-fit: contain; display: block; } .appbar .ab-logo:not([src]) { display: none; }</style>
+        <style id="event-css">
+#event-card:empty { display: none; }
+#event-card { margin: 14px 0 6px; }
+#lobbies { scroll-margin-top: 84px; }
+body.in-app .card.evc { padding: 0; overflow: hidden; display: block; border-radius: 22px; background: #050505; border-color: rgba(255,255,255,.14); }
+body.in-app .card.evc.live { border-color: rgba(239,68,68,.7); box-shadow: 0 0 0 1px rgba(239,68,68,.25), 0 14px 44px rgba(239,68,68,.12); }
+.evhero { position: relative; aspect-ratio: 16/9; min-height: 210px; max-height: 340px; overflow: hidden; background: radial-gradient(120% 90% at 85% 0%, rgba(239,68,68,.35), transparent 60%), repeating-linear-gradient(115deg, rgba(255,255,255,.04) 0 2px, transparent 2px 14px), linear-gradient(160deg, #1c0505, #000 70%); }
+.evart { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.evshade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.55) 0, rgba(0,0,0,0) 38%, rgba(0,0,0,.92) 100%); }
+.evchips { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.evpill, .evchip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; clip-path: polygon(9px 0, 100% 0, calc(100% - 9px) 100%, 0 100%); }
+.evpill { background: #1d1d1d; color: rgba(255,255,255,.8); }
+.evpill.live { background: #ef4444; color: #fff; }
+.evpill.live::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: evpulse 1.4s ease-in-out infinite; }
+.evpill.soon { background: #fff; color: #000; }
+.evchip { background: rgba(0,0,0,.6); color: #fff; }
+@keyframes evpulse { 50% { opacity: .25; } }
+.evtitle { position: absolute; left: 16px; right: 16px; bottom: 14px; }
+.evtitle small { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.72); }
+.evname { font-size: clamp(26px, 8vw, 40px); line-height: 1; font-weight: 700; font-style: italic; text-transform: uppercase; letter-spacing: -.02em; text-shadow: 0 2px 18px rgba(0,0,0,.75); word-break: break-word; }
+.evstrip { padding: 16px 16px 4px; display: grid; gap: 10px; }
+.evsl { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.evcd { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.evcell { background: #0e0e0e; border: 1px solid rgba(255,255,255,.14); padding: 10px 4px 8px; text-align: center; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%); }
+.evc.live .evcell { border-color: rgba(239,68,68,.5); }
+.evcell b { display: block; font-size: clamp(24px, 8vw, 34px); line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.evcell small { display: block; margin-top: 5px; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+.evprog { height: 6px; border-radius: 99px; background: rgba(255,255,255,.1); overflow: hidden; }
+.evprog i { display: block; height: 100%; width: 0; background: #ef4444; box-shadow: 0 0 12px rgba(239,68,68,.7); }
+.evcta { padding: 12px 16px 4px; display: grid; gap: 6px; }
+.evbtn { min-height: 52px; border: 0; background: #fff; color: #000; font: inherit; font-size: 15px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); }
+.evbtn:active { transform: scale(.985); }
+.evbtn.ghost, .evbtn:disabled { background: #1a1a1a; color: #fff; }
+.evbtn:disabled { color: rgba(255,255,255,.45); cursor: default; }
+.evbtn:focus-visible, .evtab:focus-visible, .evpl:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.evctasub { text-align: center; font-size: 13px; color: rgba(255,255,255,.62); min-height: 16px; }
+.evtabs { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 12px; border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); }
+.evtab { min-height: 48px; background: none; border: 0; border-bottom: 3px solid transparent; color: rgba(255,255,255,.55); font: inherit; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.evtab.on { color: #fff; border-bottom-color: #fff; }
+.evc.live .evtab.on { border-bottom-color: #ef4444; }
+.evbody { padding: 16px; display: grid; gap: 14px; }
+.evblurb { margin: 0; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,.82); }
+.evtiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.evtile { min-width: 0; background: #0e0e0e; border: 1px solid rgba(255,255,255,.12); padding: 12px 14px; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); }
+.evtile.wide { grid-column: 1 / -1; }
+.evtile small { display: block; margin-bottom: 4px; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.evtile b { display: block; font-size: 16px; line-height: 1.25; font-weight: 700; }
+.evh { margin: 2px 0 -6px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+.evprz { display: grid; gap: 6px; }
+.evprow { display: flex; align-items: center; gap: 12px; background: #0e0e0e; border: 1px solid rgba(255,255,255,.12); padding: 10px 12px; }
+.evprow .pl { flex: none; min-width: 48px; text-align: center; padding: 4px 10px; font-size: 13px; font-weight: 700; background: #fff; color: #000; clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%); }
+.evprow .pz { font-size: 15px; font-weight: 600; min-width: 0; word-break: break-word; }
+.evempty { text-align: center; color: rgba(255,255,255,.6); font-size: 14px; line-height: 1.5; padding: 22px 8px; }
+.evme { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #0e0e0e; border: 1px solid rgba(255,255,255,.22); padding: 12px 14px; font-size: 14px; color: rgba(255,255,255,.8); }
+.evme b { font-size: 20px; color: #fff; }
+.evlb { display: grid; gap: 4px; }
+.evrow { display: grid; grid-template-columns: 40px minmax(0,1fr) 30px 30px 32px 54px; align-items: center; gap: 6px; padding: 8px 10px; background: #0b0b0b; border: 1px solid rgba(255,255,255,.08); border-left: 3px solid rgba(255,255,255,.08); font-size: 14px; font-variant-numeric: tabular-nums; }
+.evrow.head { background: none; border-color: transparent; padding-top: 0; padding-bottom: 2px; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.45); }
+.evrow .n { text-align: right; color: rgba(255,255,255,.75); }
+.evrow .pts { text-align: right; font-weight: 700; }
+.evrow .evrk { font-weight: 700; color: rgba(255,255,255,.7); }
+.evrow.r1 { border-left-color: #facc15; } .evrow.r1 .evrk { color: #facc15; }
+.evrow.r2 { border-left-color: #cbd5e1; } .evrow.r2 .evrk { color: #cbd5e1; }
+.evrow.r3 { border-left-color: #f59e0b; } .evrow.r3 .evrk { color: #f59e0b; }
+.evrow.me { background: #161616; border-color: #fff; }
+.evpl { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 0; background: none; border: 0; color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
+.evpl img.av { width: 26px; height: 26px; flex: none; border-radius: 50%; object-fit: contain; filter: grayscale(1) brightness(1.7); }
+.evpl img.av.pic { object-fit: cover; filter: none; }
+.evpl .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.evrules { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: ev; }
+.evrules li { counter-increment: ev; display: flex; gap: 12px; align-items: flex-start; background: #0e0e0e; border: 1px solid rgba(255,255,255,.1); padding: 12px 14px; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,.86); }
+.evrules li::before { content: counter(ev); flex: none; width: 26px; height: 24px; display: grid; place-items: center; font-size: 13px; font-weight: 700; background: #fff; color: #000; clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%); }
+.evtag { display: inline-block; margin: 2px 0 4px; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px; background: rgba(239,68,68,.16); color: #fca5a5; border: 1px solid rgba(239,68,68,.4); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hevnote { display: flex; align-items: center; gap: 10px; border: 1px solid rgba(239,68,68,.5); background: rgba(239,68,68,.1); border-radius: 10px; padding: 10px 12px; font-size: 14px; line-height: 1.4; }
+.hevnote::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: #ef4444; }
+.evstat { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: 1px solid rgba(255,255,255,.28); color: rgba(255,255,255,.62); }
+.evstat.live { background: #ef4444; border-color: #ef4444; color: #fff; }
+#ad-evc .seg { display: flex; width: 100%; }
+#ad-evc .seg button { flex: 1 1 0; padding: 10px 6px; }
+@media (max-width: 420px) { .evbody { padding: 14px 12px; } .evstrip, .evcta { padding-left: 12px; padding-right: 12px; } .evrow { grid-template-columns: 34px minmax(0,1fr) 26px 26px 28px 48px; gap: 4px; padding: 8px; font-size: 13px; } .evpl img.av { width: 22px; height: 22px; } .evtab { font-size: 12px; letter-spacing: .06em; } }
+@media (max-width: 360px) { .evpl img.av { display: none; } }
+@media (prefers-reduced-motion: reduce) { .evpill.live::before { animation: none; } }
+</style>
     </head>
     <body>
         <div class="wrap">
@@ -222,6 +305,7 @@
                 <!-- JOIN GAME -->
                 <div class="pane" id="p-join">
                     <h2 class="ptitle">Join a game</h2>
+                    <div id="event-card"></div>
                     <p class="sub">Join an open lobby. The host picks players fairly when the game starts.</p>
                     <div class="msg" id="join-msg" role="alert" style="margin-bottom:12px"></div>
                     <div id="lobbies"></div>
@@ -251,6 +335,12 @@
                         <div class="card" id="ad-rep" hidden>
                             <h2><img src="assets/report.webp" alt="" onerror="this.remove()">Player reports <span id="ad-repn" class="dim"></span></h2>
                             <div id="ad-replist"></div>
+                        </div>
+                        <div class="card" id="ad-evc">
+                            <h2>Events</h2>
+                            <p class="dim" style="margin:8px 0 12px">Unlock an event to start it right now, or lock it to stop it. While an event is live, every lobby the host creates goes into it automatically.</p>
+                            <div id="ad-ev-list"></div>
+                            <div class="msg" id="ad-ev-msg" hidden></div>
                         </div>
                         <div class="card" id="ad-pl" style="margin-bottom:14px">
                             <h2>Player tools</h2>
@@ -317,6 +407,7 @@
                                 </div>
                                 <button class="btn" id="ho-mk" type="button">Create lobby</button>
                             </div>
+                            <div class="hevnote" id="ho-evnote" hidden></div>
                             <div class="msg" id="ho-amsg" hidden></div>
                         </div>
                         <div class="card" id="ho-ntf">
@@ -832,7 +923,9 @@
   function isDev(){ return hasBadge('dev'); }
   function isHost(){ return hasBadge('host'); }
   /* panels only call the server through this gateway: the server re-checks the session + badge on every call */
-  window.__ml={ panel:function(panel,fn,args){ return call('panel_call',{p_panel:panel,p_fn:fn,p_args:args||{}}); }, badges:function(){ return BADGES; } };
+  window.__ml={ panel:function(panel,fn,args){ return call('panel_call',{p_panel:panel,p_fn:fn,p_args:args||{}}); }, badges:function(){ return BADGES; },
+    events:function(){ return (G&&G.events)||[]; }, evState:function(e){ return evState(e); }, evWhen:function(e){ var w=evWhen(e,CENTRAL); return w.day+' \u00b7 '+w.time; }, refresh:function(){ pollGames(); },
+    lobbyEvent:function(id){ var ls=(G&&G.lobbies)||[]; for(var i=0;i<ls.length;i++){ if(ls[i].id===id) return ls[i].event_key?evName(ls[i].event_key):''; } return ''; } };
   function syncAdminMenu(){
     var d=isDev(), h=isHost(), a=$('mi-admin'), o=$('mi-host'); if(a) a.hidden=!d; if(o) o.hidden=!h;
     var act=document.querySelector('.pane.active');
@@ -850,6 +943,164 @@
     if(name==='host'&&window.__mlHostOpen) window.__mlHostOpen();
   }
   document.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ setTab(b.getAttribute('data-h')); }; });
+
+
+  /* ---------- events (Join tab event page, lobby tags) ---------- */
+  var CENTRAL='America/Chicago', EVSIG='', EVCUR=null, EVST='', EVTAB='details', EVKEY='', EVLB={key:'',rows:null,at:0,err:''}, EVFETCH=false;
+  function evState(e){
+    var n=now(), s=new Date(e.starts_at).getTime(), x=new Date(e.ends_at).getTime();
+    if(e.mode==='on') return 'live';
+    if(e.mode==='off') return n>=x?'ended':'locked';
+    if(n<s) return 'soon';
+    return n<x?'live':'ended';
+  }
+  function evName(key){ var l=(G&&G.events)||[]; for(var i=0;i<l.length;i++){ if(l[i].key===key) return l[i].name; } return 'Event'; }
+  function evPrimary(){
+    var list=(G&&G.events)||[], b={live:[],soon:[],locked:[],ended:[]}, n=now();
+    list.forEach(function(e){ var st=evState(e); if(b[st]) b[st].push(e); });
+    function by(x,y){ return new Date(x.starts_at)-new Date(y.starts_at); }
+    ['live','soon','locked'].forEach(function(k){ b[k].sort(by); });
+    b.ended=b.ended.filter(function(e){ return n-new Date(e.ends_at)<48*3600*1000; }).sort(function(x,y){ return new Date(y.ends_at)-new Date(x.ends_at); });
+    return b.live[0]||b.soon[0]||b.locked[0]||b.ended[0]||null;
+  }
+  function evWhen(e,tz){
+    try{
+      var s=new Date(e.starts_at), x=new Date(e.ends_at);
+      var day=new Intl.DateTimeFormat('en-US',{timeZone:tz,weekday:'short',month:'short',day:'numeric'}).format(s);
+      var tf=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour:'numeric',minute:'2-digit'});
+      var zp=new Intl.DateTimeFormat('en-US',{timeZone:tz,timeZoneName:'short'}).formatToParts(s).filter(function(p){ return p.type==='timeZoneName'; })[0];
+      return {day:day,time:tf.format(s)+' \u2013 '+tf.format(x)+(zp?' '+zp.value:'')};
+    }catch(err){ return {day:new Date(e.starts_at).toDateString(),time:''}; }
+  }
+  function evTile(lbl,val,cls){ var t=el('div','evtile'+(cls?' '+cls:'')); t.appendChild(el('small',null,lbl)); t.appendChild(el('b',null,val)); return t; }
+  function goLobbies(){ var l=$('lobbies'); if(l&&l.scrollIntoView) l.scrollIntoView({behavior:'smooth',block:'start'}); }
+  function evSetTab(t){
+    EVTAB=t;
+    [].forEach.call(document.querySelectorAll('#event-card .evtab'),function(b){ var on=b.getAttribute('data-evt')===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
+    renderEvTab(); if(t==='board') evFetchLB(true);
+  }
+  function renderEvent(){
+    var box=$('event-card'), e=evPrimary();
+    if(!e){ if(EVSIG){ box.textContent=''; EVSIG=''; EVCUR=null; } return; }
+    var st=evState(e);
+    if(EVKEY!==e.key){ EVKEY=e.key; EVTAB=(st==='ended')?'board':'details'; }
+    var sig=JSON.stringify([e.key,e.name,e.image,e.starts_at,e.ends_at,e.mode,st,e.blurb,e.format,e.rules,e.prizes]);
+    EVCUR=e; EVST=st; if(sig===EVSIG) return; EVSIG=sig;
+    box.textContent='';
+    var c=el('div','card evc '+st), h=el('div','evhero');
+    if(e.image){ var im=el('img','evart'); im.src='assets/'+e.image; im.alt=''; im.onerror=function(){ im.remove(); }; h.appendChild(im); }
+    h.appendChild(el('div','evshade'));
+    var ch=el('div','evchips');
+    ch.appendChild(el('span','evpill '+st,{live:'Live now',soon:'Upcoming',locked:'On hold',ended:'Ended'}[st]));
+    ch.appendChild(el('span','evchip','Open event')); h.appendChild(ch);
+    var tt=el('div','evtitle'); tt.appendChild(el('small',null,'Motherlode event')); tt.appendChild(el('div','evname',e.name)); h.appendChild(tt);
+    c.appendChild(h);
+    var sp=el('div','evstrip'), autoLive=(st==='live'&&e.mode==='auto');
+    if(st==='soon'||autoLive){
+      sp.appendChild(el('div','evsl',st==='soon'?'Event starts in':'Event ends in'));
+      var cd=el('div','evcd');
+      [['d','Days'],['h','Hrs'],['m','Min'],['s','Sec']].forEach(function(u){ var cell=el('div','evcell'), nb=el('b',null,'00'); nb.id='ev-'+u[0]; cell.appendChild(nb); cell.appendChild(el('small',null,u[1])); cd.appendChild(cell); });
+      sp.appendChild(cd);
+      if(autoLive){ var pg=el('div','evprog'), pf=el('i'); pf.id='ev-prog'; pg.appendChild(pf); sp.appendChild(pg); }
+    } else if(st==='live') sp.appendChild(el('div','evsl','Live now \u2014 unlocked by an admin'));
+    else if(st==='locked') sp.appendChild(el('div','evsl','Paused by an admin \u2014 check back soon'));
+    else sp.appendChild(el('div','evsl','This event has ended \u2014 final standings below'));
+    c.appendChild(sp);
+    var cta=el('div','evcta'), btn=el('button','evbtn'); btn.type='button'; btn.id='ev-cta'; cta.appendChild(btn);
+    var cs=el('div','evctasub'); cs.id='ev-ctasub'; cta.appendChild(cs); c.appendChild(cta);
+    var tb=el('div','evtabs'); tb.setAttribute('role','tablist');
+    [['details','Details'],['board','Leaderboard'],['rules','Rules']].forEach(function(t){
+      var b=el('button','evtab'+(EVTAB===t[0]?' on':''),t[1]); b.type='button'; b.setAttribute('role','tab'); b.setAttribute('aria-selected',EVTAB===t[0]); b.setAttribute('data-evt',t[0]);
+      b.onclick=function(){ evSetTab(t[0]); }; tb.appendChild(b);
+    });
+    c.appendChild(tb);
+    var body=el('div','evbody'); body.id='ev-body'; c.appendChild(body);
+    box.appendChild(c);
+    renderEvTab(); evCtaUpdate(); evTick();
+    if(EVTAB==='board') evFetchLB(false);
+  }
+  function renderEvTab(){
+    var body=$('ev-body'), e=EVCUR; if(!body||!e) return; body.textContent='';
+    if(EVTAB==='details') evDetails(body,e); else if(EVTAB==='board') evBoard(body,e); else evRules(body,e);
+  }
+  function evDetails(body,e){
+    if(e.blurb) body.appendChild(el('p','evblurb',e.blurb));
+    var w=evWhen(e,CENTRAL), g=el('div','evtiles');
+    g.appendChild(evTile('Date',w.day)); g.appendChild(evTile('Format',e.format||'Open lobbies'));
+    g.appendChild(evTile('Time',w.time,'wide'));
+    try{ var lz=Intl.DateTimeFormat().resolvedOptions().timeZone; if(lz&&lz!==CENTRAL){ var lw=evWhen(e,lz); if(lw.day+lw.time!==w.day+w.time) g.appendChild(evTile('Your time',lw.day+' \u00b7 '+lw.time,'wide')); } }catch(err){}
+    body.appendChild(g);
+    var pr=Array.isArray(e.prizes)?e.prizes:[];
+    if(pr.length){
+      body.appendChild(el('div','evh','Prizes'));
+      var pl=el('div','evprz');
+      pr.forEach(function(p){ var r=el('div','evprow'); r.appendChild(el('span','pl',String(p.place||''))); r.appendChild(el('span','pz',String(p.prize||''))); pl.appendChild(r); });
+      body.appendChild(pl);
+    }
+  }
+  function evRules(body,e){
+    var rl=Array.isArray(e.rules)?e.rules:[];
+    if(!rl.length){ body.appendChild(el('div','evempty','Rules for this event will be posted soon.')); return; }
+    var ul=el('ol','evrules'); rl.forEach(function(r){ ul.appendChild(el('li',null,String(r))); }); body.appendChild(ul);
+  }
+  function evBoard(body,e){
+    if(EVST==='soon'){ body.appendChild(el('div','evempty','Standings open when the event starts.')); return; }
+    if(EVLB.key!==e.key||!EVLB.rows){
+      body.appendChild(el('div','evempty',(EVLB.key===e.key&&EVLB.err)?EVLB.err:'Loading standings\u2026')); return;
+    }
+    var rows=EVLB.rows;
+    if(!rows.length){ body.appendChild(el('div','evempty','No results yet. Standings appear as soon as the host saves the first game.')); return; }
+    var me=ME&&ME.username, mine=rows.filter(function(r){ return r.username===me; })[0];
+    var bar=el('div','evme');
+    if(mine){ bar.appendChild(el('span',null,'Your rank')); bar.appendChild(el('b',null,'#'+mine.rank+' \u00b7 '+(mine.pts>0?'+':'')+mine.pts+' pts')); }
+    else bar.appendChild(el('span',null,'You haven\u2019t played an event game yet.'));
+    body.appendChild(bar);
+    var lb=el('div','evlb'), hd=el('div','evrow head');
+    ['#','Player','GP','W','K','Pts'].forEach(function(t,i){ hd.appendChild(el('span',i>1?'n':null,t)); }); lb.appendChild(hd);
+    var names=rows.map(function(r){ return r.username; });
+    rows.forEach(function(r){
+      var row=el('div','evrow'+(r.rank<=3?' r'+r.rank:'')+(r.username===me?' me':''));
+      row.appendChild(el('span','evrk','#'+r.rank));
+      var pb=el('button','evpl'); pb.type='button'; pb.onclick=function(){ openByName(r.username); };
+      var av=el('img','av'); av.alt=''; av.src=MEMBER; if(AV[r.username]){ av.src=AV[r.username]; av.className='av pic'; } pb.appendChild(av);
+      var nm=el('span','nm'); addName(nm,r.username); pb.appendChild(nm); row.appendChild(pb);
+      row.appendChild(el('span','n',String(r.games))); row.appendChild(el('span','n',String(r.wins))); row.appendChild(el('span','n',String(r.kills)));
+      row.appendChild(el('span','pts',(r.pts>0?'+':'')+r.pts)); lb.appendChild(row);
+    });
+    body.appendChild(lb); ensureAvatars(names);
+  }
+  function evFetchLB(force){
+    var e=EVCUR; if(!e||EVFETCH||EVST==='soon') return;
+    if(!force&&EVLB.key===e.key&&Date.now()-EVLB.at<10000) return;
+    EVFETCH=true; var key=e.key;
+    call('event_leaderboard',{p_key:key}).then(function(r){ EVLB={key:key,rows:r||[],at:Date.now(),err:''}; })
+      .catch(function(err){ EVLB={key:key,rows:null,at:Date.now(),err:friendly(err)}; })
+      .then(function(){ EVFETCH=false; if(EVTAB==='board'&&EVCUR&&EVCUR.key===key) renderEvTab(); });
+  }
+  function evCtaUpdate(){
+    var e=EVCUR, b=$('ev-cta'); if(!e||!b) return;
+    var cta=b.parentNode, sub=$('ev-ctasub'), ls=(G&&G.lobbies)||[];
+    var open=ls.filter(function(l){ return l.event_key===e.key&&l.status==='open'; });
+    var inEv=ls.filter(function(l){ return l.event_key===e.key&&l.me_in&&l.status!=='closed'; })[0];
+    cta.hidden=false; b.disabled=false; b.className='evbtn'; b.onclick=null;
+    if(EVST==='live'){
+      if(inEv){ b.textContent='You\u2019re in a lobby'; b.className='evbtn ghost'; b.onclick=goLobbies; sub.textContent=inEv.name+(inEv.status==='started'?' \u00b7 match started':' \u00b7 waiting for the host'); }
+      else if(open.length){ b.textContent='Join a lobby'; b.onclick=goLobbies; sub.textContent=open.length+(open.length===1?' lobby open':' lobbies open'); }
+      else { b.textContent='Waiting for a lobby'; b.disabled=true; sub.textContent='The host opens lobbies throughout the event.'; }
+    } else if(EVST==='ended'){ b.textContent='View final standings'; b.onclick=function(){ evSetTab('board'); }; sub.textContent=''; }
+    else cta.hidden=true;
+  }
+  function evSync(){
+    evCtaUpdate();
+    if(EVTAB==='board'&&$('p-join').classList.contains('active')) evFetchLB(false);
+  }
+  function evTick(){
+    var e=EVCUR; if(!e||!$('ev-d')) return;
+    var tgt=EVST==='soon'?new Date(e.starts_at):new Date(e.ends_at), t=Math.max(0,Math.floor((tgt-now())/1000));
+    var v={d:Math.floor(t/86400),h:Math.floor(t%86400/3600),m:Math.floor(t%3600/60),s:t%60};
+    for(var k in v){ var n=$('ev-'+k), x=('0'+v[k]).slice(-2); if(n&&n.textContent!==x) n.textContent=x; }
+    var pf=$('ev-prog'); if(pf){ var a=new Date(e.starts_at).getTime(), z=new Date(e.ends_at).getTime(); pf.style.width=Math.max(0,Math.min(100,(now()-a)/(z-a)*100))+'%'; }
+  }
 
   /* ---------- games / join / timer ---------- */
   var G=null, off=0, pT=null, tT=null;
@@ -878,7 +1129,7 @@
     }).catch(function(){ openModal({username:n}); });
   }
   function rchips(names,spawns){ var w=el('div','rchips'); names.forEach(function(n){ var c=el('button','rchip'+(ME&&n===ME.username?' me':'')), i=el('img'); c.type='button'; c.onclick=function(){ openByName(n); }; i.src=MEMBER; i.alt=''; if(AV[n]){ i.src=AV[n]; i.className='pic'; } c.appendChild(i); addName(c,n); if(spawns&&spawns[n]) c.appendChild(el('span','rsp',spawns[n])); w.appendChild(c); }); return w; }
-  function stopGames(){ AV={}; AVpend={}; lastAt=undefined; lastUnread=undefined; lastNotifUnread=undefined; $('notif-dot').hidden=true; $('inbox').hidden=true; $('inbox').textContent=''; clearInterval(pT); clearInterval(tT); clearInterval(bT); G=null; $('gbanner').hidden=true; }
+  function stopGames(){ AV={}; AVpend={}; lastAt=undefined; lastUnread=undefined; lastNotifUnread=undefined; $('notif-dot').hidden=true; $('inbox').hidden=true; $('inbox').textContent=''; clearInterval(pT); clearInterval(tT); clearInterval(bT); G=null; $('gbanner').hidden=true; EVSIG=''; EVCUR=null; EVKEY=''; EVLB={key:'',rows:null,at:0,err:''}; $('event-card').textContent=''; }
   document.addEventListener('visibilitychange',function(){ if(!document.hidden&&G) pollGames(); });
   function bannerLobby(){
     var best=null;
@@ -890,6 +1141,7 @@
     return best;
   }
   function tick(){
+    if(G){ renderEvent(); evTick(); }
     if($('p-notifs').classList.contains('active')) updateChest();
     var l=bannerLobby(), b=$('gbanner');
     if(!l){ b.hidden=true; return; }
@@ -901,11 +1153,13 @@
   }
   function renderGames(){
     var ls=G.lobbies, box=$('lobbies'); box.textContent='';
+    renderEvent(); evSync();
     $('join-dot').hidden=!ls.some(function(l){return l.status==='open'&&!l.me_in});
     if(!ls.length) box.appendChild(el('div','empty','No games right now. Check back soon.'));
     ls.forEach(function(l){
       var c=el('div','card lob'), m=el('div','mid');
       m.appendChild(el('div','rname',l.name));
+      if(l.event_key) m.appendChild(el('div','evtag',evName(l.event_key)));
       m.appendChild(el('div','rsub',l.mode+' players \u00b7 '+l.joined+' joined'+(l.status==='started'?' \u00b7 started':'')));
       c.appendChild(m);
       if(l.status==='open'){
@@ -945,6 +1199,7 @@
     if(G.notif_unread!==undefined&&G.notif_unread!==lastNotifUnread){ lastNotifUnread=G.notif_unread; if($('p-notifs').classList.contains('active')) loadNotifs(); }
     updateDot(); updateChest();
     var la=G.last?G.last.at:null; if(la!==lastAt){ var first=(lastAt===undefined); lastAt=la; if(!first) refreshStats(); }
+    try{ document.dispatchEvent(new Event('ml-games')); }catch(err){}
     tick();
   }
 
@@ -1328,7 +1583,7 @@ var sg=JSON.stringify([p.pr,p.streak,p.tokens,p.res,p.games]),o=c.rows[p.u];if(o
 var n=row(l,p);if(o)o.node.replaceWith(n);else c.rowsBox.appendChild(n);c.rows[p.u]={sig:sg,node:n}})}
 function build(l){
 var c={rows:{}},n=el('div','card lob'),open=l.status==='open',h=el('div','lh'),t=el('div');c.node=n;
-t.appendChild(el('h2',null,l.name));t.appendChild(el('small',null,l.mode+'-player game \u00b7 '+l.players.length+' joined'));h.appendChild(t);
+t.appendChild(el('h2',null,l.name));t.appendChild(el('small',null,l.mode+'-player game \u00b7 '+l.players.length+' joined'+(window.__ml.lobbyEvent(l.id)?' \u00b7 '+window.__ml.lobbyEvent(l.id):'')));h.appendChild(t);
 if(open){var sg=el('div','seg');[3,4].forEach(function(m){var b=el('button',m===l.mode?'on':'',m);b.type='button';b.onclick=function(){if(m!==l.mode)act('admin_set_mode',l.id,{p_mode:m})};sg.appendChild(b)});h.appendChild(sg)}
 n.appendChild(h);
 if(!open){var tm=el('div','timer'),im=el('img');im.src='assets/timer.webp';im.alt='';im.onerror=function(){im.remove()};tm.appendChild(im);
@@ -1348,7 +1603,7 @@ n.appendChild(a);return c}
 function render(){
 var box=$('ho-lobs'),ids={},em=box.querySelector('.empty');if(em)em.remove();
 S.lobbies.forEach(function(l){ids[l.id]=1;
-var sig=JSON.stringify([l.name,l.mode,l.status,l.players.map(function(p){return[p.u,p.picked]})]),c=cache[l.id];
+var sig=JSON.stringify([l.name,l.mode,l.status,window.__ml.lobbyEvent(l.id),l.players.map(function(p){return[p.u,p.picked]})]),c=cache[l.id];
 if(!c||c.sig!==sig){var nc=build(l);nc.sig=sig;if(c)c.node.replaceWith(nc.node);else box.appendChild(nc.node);c=cache[l.id]=nc}
 sync(l,c)});
 for(var id in cache)if(!ids[id]){cache[id].node.remove();delete cache[id]}
@@ -1369,6 +1624,52 @@ say('ho-nt-msg');var btn=$('ho-nt-send');btn.disabled=true;
 rpc('admin_notify',{p_title:t,p_body:b,p_to:to||null}).then(function(){$('ho-nt-title').value='';$('ho-nt-body').value='';$('ho-nt-to').value='';say('ho-nt-msg','Sent to '+(to||'everyone')+'.');loadNtf()})
 .catch(function(e){say('ho-nt-msg',err(e))}).then(function(){btn.disabled=false})};
 function tick(){[].forEach.call(document.querySelectorAll('[data-t]'),function(b){var s=Math.ceil((new Date(b.getAttribute('data-t'))-(Date.now()+off))/1000);b.textContent=s>0?Math.floor(s/60)+':'+('0'+s%60).slice(-2):'LIVE'})}
+})();
+</script>
+        <script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+  var ML=window.__ml; if(!ML) return;
+  var LABEL={live:'Live',soon:'Scheduled',locked:'Locked',ended:'Ended'};
+  var HELP={auto:'Follows its schedule: opens and closes on its own.',on:'Unlocked: live until you lock it. New lobbies join it.',off:'Locked: stays closed, even during its scheduled time.'};
+  var sig='';
+  function say(t,ok){var m=$('ad-ev-msg');m.hidden=!t;m.textContent=t||''}
+  function err(e){var m=(e&&e.message)||'';if(/FORBIDDEN/.test(m))return'You do not have access to this panel.';if(/Could not find|PGRST202/.test(m))return'Run the events SQL in Supabase first.';if(/EVENT_NOT_FOUND/.test(m))return'That event no longer exists.';return m||'Something went wrong.'}
+  function setMode(e,m,seg){
+    seg.querySelectorAll('button').forEach(function(b){b.disabled=true});say();
+    ML.panel('dev','admin_set_event',{p_key:e.key,p_mode:m}).then(function(){
+      say(e.name+': '+(m==='on'?'unlocked. New lobbies will join it.':m==='off'?'locked.':'back on its schedule.'));
+      sig='';ML.refresh();
+    }).catch(function(x){say(err(x));seg.querySelectorAll('button').forEach(function(b){b.disabled=false})});
+  }
+  function adminRender(){
+    var box=$('ad-ev-list');if(!box)return;
+    var list=ML.events()||[];
+    var s=JSON.stringify(list.map(function(e){return[e.key,e.name,e.starts_at,e.ends_at,e.mode,ML.evState(e)]}));
+    if(s===sig)return;sig=s;box.textContent='';
+    if(!list.length){box.appendChild(el('div','dim','No events yet.'));return}
+    list.forEach(function(e){
+      var st=ML.evState(e),c=el('div','rp'),top=el('div','ptop');
+      top.appendChild(el('b',null,e.name));top.appendChild(el('span','evstat '+st,LABEL[st]||st));c.appendChild(top);
+      c.appendChild(el('div','dim',ML.evWhen(e)));
+      var seg=el('div','seg');
+      [['auto','Schedule'],['on','Unlocked'],['off','Locked']].forEach(function(o){
+        var b=el('button',e.mode===o[0]?'on':'',o[1]);b.type='button';
+        b.onclick=function(){if(e.mode!==o[0])setMode(e,o[0],seg)};seg.appendChild(b);
+      });
+      c.appendChild(seg);c.appendChild(el('div','dim',HELP[e.mode]||''));box.appendChild(c);
+    });
+  }
+  function hostNote(){
+    var n=$('ho-evnote');if(!n)return;
+    var live=(ML.events()||[]).filter(function(e){return ML.evState(e)==='live'})[0];
+    if(!live){n.hidden=true;n.textContent='';return}
+    n.hidden=false;n.textContent=live.name+' is live. New lobbies you create now are added to it automatically.';
+  }
+  document.addEventListener('ml-games',function(){adminRender();hostNote()});
+  var prevReset=window.__mlAdminReset;
+  window.__mlAdminReset=function(){if(prevReset)prevReset();sig='';var b=$('ad-ev-list');if(b)b.textContent='';say()};
 })();
 </script>
         <script>
